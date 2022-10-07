@@ -11,7 +11,8 @@ from rest_framework.decorators import api_view
 @api_view(["POST"])
 def api_home(request, *args, **kwargs):
     serializer = ProductSerializer(data=request.data)
-    if serializer:
-        is_instance = serializer.save()
-        print(is_instance)
+    if serializer.is_valid(raise_exception=True):
+        # is_instance = serializer.save()
+        print(serializer.data)
         return Response(serializer.data)
+    return Response({"invalid": "not good data"}, status=400)
