@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import views
+from . import views, viewsets
 
 urlpatterns = [
     path("<int:pk>/", views.product_detail_view),
@@ -10,4 +10,7 @@ urlpatterns = [
     path("<int:pk>/update/", views.product_update_view),
     # path("<int:pk>/", views.product_alt_view),
     # path("", views.product_alt_view),
+    path("v2/<int:pk>/", viewsets.product_list_view),
+    path("v2/<int:pk>/", viewsets.product_detail_view)
+
 ]
