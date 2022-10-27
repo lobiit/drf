@@ -19,10 +19,21 @@ from django.urls import path, include
 import api
 import cfehome
 
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view as swagger_get_schema_view
+
+schema_view = swagger_get_schema_view(
+    openapi.Info(
+        title='Products API',
+        default_version='1.0.0',
+        description="API documentation of App"
+    ), public=True,
+)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('cfe/', include('cfehome.urls')),
     path('api/products/', include('products.urls')),
     # path('api/v2/', include('products.routers'))
+    path('', schema_view.with_ui('swagger', cache_timeout=0), name='swagger-schema'),
 ]

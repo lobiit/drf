@@ -48,6 +48,12 @@ class ProductListCreateAPIView(generics.ListCreateAPIView):
             content = title
         serializer.save(content=content)
 
+    # def get_queryset(self, *args, **kwargs):
+    #     qs = super().get_queryset(*args, **kwargs)
+    #     request = self.request
+    #     print(request.user)
+    #     return qs.filter(user=request.user)
+
 
 product_list_create_view = ProductListCreateAPIView.as_view()
 
@@ -73,6 +79,12 @@ class ProductUpdateAPIView(generics.UpdateAPIView):
         if not instance.content:
             instance.content = instance.title
 
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        request = self.request
+        print(request.user)
+        return qs.filter(user=request.user)
+
 
 product_update_view = ProductUpdateAPIView.as_view()
 
@@ -86,6 +98,12 @@ class ProductDeleteAPIView(generics.DestroyAPIView):
 
     def perform_destroy(self, instance):
         super().perform_destroy(instance)
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        request = self.request
+        print(request.user)
+        return qs.filter(user=request.user)
 
 
 product_delete_view = ProductDeleteAPIView.as_view()
