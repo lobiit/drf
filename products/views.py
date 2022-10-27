@@ -31,7 +31,7 @@ from .serializers import ProductSerializer
 # product_mixin_view = ProductMixinView.as_view()
 
 
-class ProductListCreateAPIView(UserQuerySetMixin, generics.ListCreateAPIView):
+class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     authentication_classes = [authentication.SessionAuthentication]
