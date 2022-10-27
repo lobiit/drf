@@ -32,6 +32,7 @@ schema_view = swagger_get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
+    path('api/search/', include('search.urls')),
     path('cfe/', include('cfehome.urls')),
     path('api/products/', include('products.urls')),
     # path('api/v2/', include('products.routers'))
