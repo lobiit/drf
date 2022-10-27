@@ -2,9 +2,22 @@ from rest_framework import serializers
 from rest_framework.reverse import reverse
 from .models import Product
 from .validators import validate_title
+from .user_serializers import UserPublicSerializer
+
+
+class ProductInlineSerializer(serializers.Serializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name='product-detail',
+        lookup_field='pk',
+        read_only=True
+    )
+    title = serializers.CharField(read_only=True)
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    owner = UserPublicSerializer(source='user', read_only=True)
+    related_products = ProductInlineSerializer(source='user.product_set.all', read_only=True, many=True)
+    # my_user_data = serializers.SerializerMethodField(read_only=True)
     my_discount = serializers.SerializerMethodField(read_only=True)
     edit_url = serializers.SerializerMethodField(read_only=True)
     url = serializers.HyperlinkedIdentityField(
@@ -17,7 +30,7 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = [
-            #'user',
+            'owner',
             'url',
             'edit_url',
             'pk',
@@ -27,7 +40,14 @@ class ProductSerializer(serializers.ModelSerializer):
             'price',
             'sale_price',
             'my_discount',
+            'related_products',
+            # 'my_user_data',
         ]
+
+    # def get_my_user_data(self, obj):
+    #     return {
+    #         "username": obj.user.username
+    #     }
 
     def create(self, validated_data):
         # email = validated_data.pop('email')
